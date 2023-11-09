@@ -8,15 +8,24 @@ class Sequence
     // implemented as singly linked list
 
 public:
-    Sequence();
-    ~Sequence();
-    Sequence(const Sequence<Key, Info> &src)
+    Sequence():head(nullptr), tail(nullptr){}
+    ~Sequence()
     {
-        // initialize properly data members
-        // probably as in default constructor
-        *this = src;
+        clear();
     }
-    Sequence<Key, Info> &operator=(const Sequence<Key, Info> &src);
+    Sequence(const Sequence<Key, Info> &src):head(nullptr), tail(nullptr)
+    {
+        Node* nodePtr = src.head;
+        while(nodePtr != nullptr)
+        {
+            pushBack(nodePtr->key, nodePtr->info);
+            nodePtr = nodePtr->next;
+        }
+    }
+    Sequence<Key, Info> &operator=(const Sequence<Key, Info> &src)
+    {
+        
+    }
     unsigned int size() const;
     bool insertAfter(const Key &kWhat, const Info iWhat, const Key &where, int which = 1)
     void pushFront(const Key &key, const Info &info); // keys are not unique!
@@ -36,8 +45,19 @@ public:
     void swap(Sequence<Key, Info> &);
     Sequence<Key, Info> subsequence(const Key &startK, int startCh, const Key &endK, int endCh); // returns a Sequence extracted from the original sequence starting from "startCh-th" element of the "startK" Key and ending on "endCh-th" element of the "endK" Key
 
-    // and the rest of the interface
 private:
+    struct Node
+    {
+        Key key;
+        Info info;
+        Node* next;
+
+        Node(const Key& k, const Info& i) : key(k), info(i), next(nullptr) {}
+    };
+
+    Node* head;
+    Node* tail;
+
 };
 
 
