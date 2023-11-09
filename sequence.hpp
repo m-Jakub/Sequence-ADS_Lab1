@@ -31,7 +31,10 @@ public:
     bool search(const Key &, int n); // checks if an element of the given key can be found at least n times
     int search(const Key &); // returns the number of elements with such Key
     friend ostream &operator<<(ostream &, const Sequence<Key, Info);
-
+    void sort();
+    void reverse();
+    void swap(Sequence<Key, Info> &);
+    Sequence<Key, Info> subsequence(const Key &startK, int startCh, const Key &endK, int endCh); // returns a Sequence extracted from the original sequence starting from "startCh-th" element of the "startK" Key and ending on "endCh-th" element of the "endK" Key
 
     // and the rest of the interface
 private:
