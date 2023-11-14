@@ -138,7 +138,7 @@ public:
             popBack();
         }
     }
-    bool search(const Key &, unsigned int n) // checks if an element of the given key can be found at least n times
+    bool search(const Key &key, unsigned int n) // checks if an element of the given key can be found at least n times
     {
         if (n == 0)
             return 1;
@@ -146,16 +146,27 @@ public:
         Node *nodePtr = FindByKey(key, n);
         if (nodePtr == nullptr)
             return 0;
-
-        for (int i = 0; nodePtr->key == key; i++)
-            n
+        else
+            return 1;
     }
-    int search(const Key &); // returns the number of elements with such Key
+    int search(const Key &key) // returns the number of elements with such Key
+    {
+        Node *nodePtr = head;
+        int key_count = 0;
+
+        while (nodePtr != nullptr)
+        {
+            if (nodePtr->key == key)
+                key_count++;
+            nodePtr = nodePtr->next;
+        }
+        return key_count;
+    }
+    bool remove(const Key &keyToRemove, int which = 1);
     friend ostream &operator<<(ostream &, const Sequence < Key, Info);
-    void sort();
-    void reverse();
     void swap(Sequence<Key, Info> &);
     Sequence<Key, Info> subsequence(const Key &startK, int startCh, const Key &endK, int endCh); // returns a Sequence extracted from the original sequence starting from "startCh-th" element of the "startK" Key and ending on "endCh-th" element of the "endK" Key
+    void print();
 
 private:
     struct Node
@@ -167,30 +178,26 @@ private:
         Node(const Key &k, const Info &i) : key(k), info(i), next(nullptr) {}
     };
 
-    Node *FindByKey(const Key &key, int which) // helping function for finding "which-th" element of a given Key
+    Node *FindByKey(const Key &key, unsigned int which) // helping function for finding "which-th" element of a given Key
     {
+        if (which == 0)
+            return nullptr;
+
         Node *nodePtr = head;
+        int key_count = 0;
 
-        while (nodePtr->key != key)
+        while (nodePtr != nullptr)
         {
-            if (nodePtr == nullptr)
-                return nullptr;
+            if (nodePtr->key == key)
+                key_count++;
+            if (key_count == which)
+                return nodePtr;
             nodePtr = nodePtr->next;
         }
-
-        while (i != which)
-        {
-            if (nodePtr == nullptr)
-                return nullptr;
-            nodePtr = nodePtr->next;
-        }
-
-        return nodePtr;
+        return nullptr;
     }
 
     Node *head;
     Node *tail;
     unsigned int size;
 };
-
-// added locallyyyyyyyyyyyyyyy
