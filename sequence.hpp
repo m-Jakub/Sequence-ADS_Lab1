@@ -5,7 +5,6 @@ using namespace std;
 template <typename Key, typename Info>
 class Sequence
 {
-    // implemented as singly linked list
 
 public:
     Sequence() : head(nullptr), tail(nullptr) {}
@@ -162,11 +161,82 @@ public:
         }
         return key_count;
     }
-    bool remove(const Key &keyToRemove, int which = 1);
-    friend ostream &operator<<(ostream &, const Sequence < Key, Info);
-    void swap(Sequence<Key, Info> &);
-    Sequence<Key, Info> subsequence(const Key &startK, int startCh, const Key &endK, int endCh); // returns a Sequence extracted from the original sequence starting from "startCh-th" element of the "startK" Key and ending on "endCh-th" element of the "endK" Key
-    void print();
+    bool remove(const Key &keyRemove, unsigned int which = 1)
+    {
+        if (which == 0)
+            return 0;
+
+        if (isEmpty())
+            return 0;
+
+        Node *nodePtrPrevious = head;
+        int key_count = 0;
+
+        if (head->key == keyRemove)
+        {
+            if (which = 1)
+                return popFront();
+            key_count++;
+        }
+
+        while (nodePtrPrevious->next != nullptr)
+        {
+            if (nodePtrPrevious->next->key == keyRemove)
+                key_count++;
+            if (key_count == which)
+            {
+                if (nodePtrPrevious->next->next == nullptr)
+                    popBack();
+                else
+                {
+                    Node *toBeRemoved = nodePtrPrevious->next;
+                    nodePtrPrevious->next = toBeRemoved->next;
+                    delete toBeRemoved;
+                    return 1;
+                }
+            }
+            nodePtr = nodePtr->next;
+        }
+        return 0;
+    }
+    friend ostream &operator<<(ostream &os, const Sequence<Key, Info> &sequence)
+    {
+        Node *nodePtr = sequence.head;
+        while (nodePtr != nullptr)
+        {
+            os << nodePtr->key << "\t" << nodePtr->info << endl;
+            nodePtr = nodePtr->next;
+        }
+        return os;
+    }
+    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, const Key &endK, int endNr) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key
+    {
+        Node *start = FindByKey(startK, startNr);
+        if (start == nullptr)
+            return 0;
+
+        Node *end = FindByKey(endK, endNr);
+        if (end == nullptr)
+            return 0;
+
+        Node *nodePtr = start;
+        while (nodePtr != end)
+        {
+            subsequence.pushBack(nodePtr->key, nodePtr->info);
+            nodePtr = nodePtr->next;
+        }
+        subsequence.pushBack(end->key, end->info);
+        return 1;
+    }
+    void print()
+    {
+        Node *nodePtr = head;
+        while (nodePtr != nullptr)
+        {
+            cout << nodePtr->key << "\t" << nodePtr->info << endl;
+            nodePtr = nodePtr->next;
+        }
+    }
 
 private:
     struct Node
