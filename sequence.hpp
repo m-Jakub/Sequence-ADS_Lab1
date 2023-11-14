@@ -43,11 +43,62 @@ public:
     }
     bool insertAfter(const Key &kWhat, const Info iWhat, const Key &where, int which = 1) // inserting element after "which-th" element of the given "where" Key
     {
+        Node *ptrFound = FindByKey(kWhat, which);
+        if (ptrFound == nullptr)
+            return 0;
+        Node *newNode = new Node(kWhat, iWhat);
+        newNode->next = ptrFound->next;
+        ptrFound->next = newNode;
     }
-    void pushFront(const Key &key, const Info &info); // keys are not unique!
-    void pushBack(const Key &key, const Info &info);
-    bool popFront();
-    bool popBack();
+    void pushFront(const Key &key, const Info &info)
+    {
+        Node *newNode = new Node(kWhat, iWhat);
+        newNode->next = head;
+    }
+    void pushBack(const Key &key, const Info &info)
+    {
+        Node *newNode = new Node(kWhat, iWhat);
+        tail->next = newNode;
+    }
+    bool popFront()
+    {
+        if (isEmpty())
+            return 0;
+        if (size == 1)
+        {
+            delete head;
+            head = nullptr;
+            tail = nullptr;
+            return 1;
+        }
+
+        Node *nodePtr = head;
+        head = head->next;
+        delete nodePtr;
+        return 1;
+    }
+    bool popBack()
+    {
+        if (isEmpty())
+            return 0;
+        if (size == 1)
+        {
+            delete head;
+            head = nullptr;
+            tail = nullptr;
+            return 1;
+        }
+
+        Node *nodePtr = head;
+        while (nodePtr->next != tail)
+        {
+            nodePtr = nodePtr->next;
+        }
+        nodePtr->next = nullptr;
+        delete tail;
+        tail = nodePtr;
+        return 1;
+    }
     bool getFront(Info &, Key &); // returning front element's Info and Key by reference
     bool getBack(Info &, Key &);
     bool getInfo(Info &, const Key &, int n = 1); // returning the Info of the n-th element of the given Key by reference
