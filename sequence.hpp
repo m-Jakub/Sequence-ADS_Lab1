@@ -13,7 +13,7 @@ public:
     {
         clear();
     }
-    Sequence(const Sequence<Key, Info> &src) : head(nullptr), tail(nullptr)
+    Sequence(const Sequence<Key, Info> &src) : head(nullptr), tail(nullptr), size(0)
     {
         Node *nodePtr = src.head;
         while (nodePtr != nullptr)
@@ -37,8 +37,13 @@ public:
 
         return *this;
     }
-    unsigned int size() const;
-    bool insertAfter(const Key &kWhat, const Info iWhat, const Key &where, int which = 1);
+    unsigned int size() const
+    {
+        return size;
+    }
+    bool insertAfter(const Key &kWhat, const Info iWhat, const Key &where, int which = 1) // inserting element after "which-th" element of the given "where" Key
+    {
+    }
     void pushFront(const Key &key, const Info &info); // keys are not unique!
     void pushBack(const Key &key, const Info &info);
     bool popFront();
@@ -66,8 +71,30 @@ private:
         Node(const Key &k, const Info &i) : key(k), info(i), next(nullptr) {}
     };
 
+    Node *FindByKey(const Key &key, int which) // helping function for finding "i-th" element of a given Key
+    {
+        Node *nodePtr = head;
+
+        while (nodePtr->key != key)
+        {
+            if (nodePtr == nullptr)
+                return nullptr;
+            nodePtr = nodePtr->next;
+        }
+
+        while (i != which)
+        {
+            if (nodePtr == nullptr)
+                return nullptr;
+            nodePtr = nodePtr->next;
+        }
+
+        return nodePtr;
+    }
+
     Node *head;
     Node *tail;
+    unsigned int size;
 };
 
 // added locallyyyyyyyyyyyyyyy
