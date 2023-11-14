@@ -99,13 +99,58 @@ public:
         tail = nodePtr;
         return 1;
     }
-    bool getFront(Info &, Key &); // returning front element's Info and Key by reference
-    bool getBack(Info &, Key &);
-    bool getInfo(Info &, const Key &, int n = 1); // returning the Info of the n-th element of the given Key by reference
-    bool isEmpty();
-    void clear();
-    bool search(const Key &, int n); // checks if an element of the given key can be found at least n times
-    int search(const Key &);         // returns the number of elements with such Key
+    bool getFront(Info &info, Key &key) // returning front element's Info and Key by reference
+    {
+        if (isEmpty())
+            return 0;
+        info = head->info;
+        key = head->key;
+    }
+    bool getBack(Info &, Key &)
+    {
+        if (isEmpty())
+            return 0;
+        info = tail->info;
+        key = tail->key;
+    }
+    bool getInfo(Info &info, const Key &key, int n = 1) // returning the Info of the n-th element of the given Key by reference
+    {
+        Node *nodePtr = FindByKey(key, n);
+        if (nodePtr == nullptr)
+            return 0;
+        else
+        {
+            info = nodePtr->info;
+            return 1;
+        }
+    }
+    bool isEmpty()
+    {
+        if (size == 0)
+            return 1;
+        if (size > 0)
+            return 0;
+    }
+    void clear()
+    {
+        while (!isEmpty())
+        {
+            popBack();
+        }
+    }
+    bool search(const Key &, unsigned int n) // checks if an element of the given key can be found at least n times
+    {
+        if (n == 0)
+            return 1;
+
+        Node *nodePtr = FindByKey(key, n);
+        if (nodePtr == nullptr)
+            return 0;
+
+        for (int i = 0; nodePtr->key == key; i++)
+            n
+    }
+    int search(const Key &); // returns the number of elements with such Key
     friend ostream &operator<<(ostream &, const Sequence < Key, Info);
     void sort();
     void reverse();
@@ -122,7 +167,7 @@ private:
         Node(const Key &k, const Info &i) : key(k), info(i), next(nullptr) {}
     };
 
-    Node *FindByKey(const Key &key, int which) // helping function for finding "i-th" element of a given Key
+    Node *FindByKey(const Key &key, int which) // helping function for finding "which-th" element of a given Key
     {
         Node *nodePtr = head;
 
