@@ -48,16 +48,20 @@ public:
         Node *newNode = new Node(kWhat, iWhat);
         newNode->next = ptrFound->next;
         ptrFound->next = newNode;
+        size++;
+        return 0;
     }
     void pushFront(const Key &key, const Info &info)
     {
         Node *newNode = new Node(kWhat, iWhat);
         newNode->next = head;
+        size++;
     }
     void pushBack(const Key &key, const Info &info)
     {
         Node *newNode = new Node(kWhat, iWhat);
         tail->next = newNode;
+        size++;
     }
     bool popFront()
     {
@@ -68,12 +72,14 @@ public:
             delete head;
             head = nullptr;
             tail = nullptr;
+            size--;
             return 1;
         }
 
         Node *nodePtr = head;
         head = head->next;
         delete nodePtr;
+        size--;
         return 1;
     }
     bool popBack()
@@ -85,6 +91,7 @@ public:
             delete head;
             head = nullptr;
             tail = nullptr;
+            size--;
             return 1;
         }
 
@@ -96,6 +103,7 @@ public:
         nodePtr->next = nullptr;
         delete tail;
         tail = nodePtr;
+        size--;
         return 1;
     }
     bool getFront(Info &info, Key &key) // returning front element's Info and Key by reference
@@ -112,7 +120,7 @@ public:
         info = tail->info;
         key = tail->key;
     }
-    bool getInfo(Info &info, const Key &key, int n = 1) // returning the Info of the n-th element of the given Key by reference
+    bool getInfo(Info &info, const Key &key, unsigned int n = 1) // returning the Info of the n-th element of the given Key by reference
     {
         Node *nodePtr = FindByKey(key, n);
         if (nodePtr == nullptr)
@@ -192,6 +200,7 @@ public:
                     Node *toBeRemoved = nodePtrPrevious->next;
                     nodePtrPrevious->next = toBeRemoved->next;
                     delete toBeRemoved;
+                    size--;
                     return 1;
                 }
             }
