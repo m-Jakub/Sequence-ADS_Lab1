@@ -3,7 +3,7 @@
 using namespace std;
 
 template <typename Key, typename Info>
-void split_pos(const Sequence<Key, Info> &seq, int start_pos, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
+void split_pos(Sequence<Key, Info> &seq, int start_pos, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
 {
     for (int i = 0; i < count; i++)
     {
@@ -16,7 +16,7 @@ void split_pos(const Sequence<Key, Info> &seq, int start_pos, int len1, int len2
 };
 
 template <typename Key, typename Info>
-void split_key(const Sequence<Key, Info> &seq, const Key &start_key, int start_occ, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
+void split_key(Sequence<Key, Info> &seq, const Key &start_key, int start_occ, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
 {
     for (int i = 0; i < count; i++)
     {

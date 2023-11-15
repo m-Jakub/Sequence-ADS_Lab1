@@ -249,11 +249,11 @@ public:
         }
         return os;
     }
-    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, int len) const // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
+    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, int len) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
     {
         if ((startNr < 0) || (len < 0))
             return 0;
-        Node *nodePtr = FindByKey(startK, startNr);
+        Node *nodePtr = FindByKey(startK, 1);
         for (int i = 0; i < startNr; i++)
         {
             if (nodePtr == nullptr)
@@ -273,10 +273,11 @@ public:
         }
         return 1;
     }
-    bool extractSubsequence(Sequence<Key, Info> &subsequence, int startNr, int len) const // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
+    bool extractSubsequence(Sequence<Key, Info> &subsequence, int startNr, int len) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
     {
         if ((startNr < 0) || (len < 0))
             return 0;
+
         Node *nodePtr = head;
         for (int i = 0; i < startNr; i++)
         {
@@ -284,8 +285,8 @@ public:
                 return 0;
             nodePtr = nodePtr->next;
         }
+        
         Node *toBeRemoved;
-
         for (int i = 0; i < len; i++)
         {
             if (nodePtr == nullptr)
