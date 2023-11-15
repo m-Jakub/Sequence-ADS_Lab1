@@ -43,6 +43,7 @@ int main()
     *test2 = test;
     cout << *test2;
     cout << "--removing--" << endl;
+    test2->print();
     assert(test2->remove(2, 2));
     assert(test2->remove(2, -2) == 0);
     assert(test2->remove(3, 1));
@@ -56,11 +57,16 @@ int main()
     assert(test2->insertAfter(6, "Geralt", 6, 1));
     assert(test2->insertAfter(6, "Gabriel", 6, 2));
     assert(test2->insertAfter(7, "Monica", 5, 1));
+    assert(test2->insertAfter(1, "", 1, 1));
+    assert(test2->insertAfter(2, "", 6, 1));
+    assert(test2->insertAfter(3, "", 6, 2));
+    assert(test2->insertAfter(4, "", 5, 1));
     assert(test2->insertAfter(7, "Lorem", 99, 1) == 0);
     assert(test2->insertAfter(7, "Lorem", 1, 99) == 0);
     cout << *test2;
     cout << "--splitting--" << endl;
-    Sequence<int, string> testSplit1;
-    Sequence<int, string> testSplit2;
+    Sequence<int, string> seq1;
+    Sequence<int, string> seq2;
+    split_pos(*test2, 2, 2, 3, 2, seq1, seq2);
     cout << "*All tests passed*" << endl;
 }

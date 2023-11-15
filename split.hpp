@@ -5,18 +5,12 @@ using namespace std;
 template <typename Key, typename Info>
 void split_pos(const Sequence<Key, Info> &seq, int start_pos, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
 {
-    Info info;
-    Key key;
-
     for (int i = 0; i < count; i++)
     {
-        if (seq.getFront(info, key) == 0)
+        if (seq.extractSubsequence(seq1, start_pos, len1) == 0)
             return;
 
-        if (seq.extractSubsequence(seq1, key, start_pos, len1) == 0)
-            return;
-
-        if (seq.extractSubsequence(seq2, key, start_pos, len2) == 0)
+        if (seq.extractSubsequence(seq2, start_pos, len2) == 0)
             return;
     }
 };

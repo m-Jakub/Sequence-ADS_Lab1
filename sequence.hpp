@@ -45,36 +45,47 @@ public:
     }
     bool insertAfter(const Key &kWhat, const Info iWhat, const Key &where, int which = 1) // inserting element after "which-th" element of the given "where" Key
     {
-        Node *ptrFound = FindByKey(kWhat, which);
+        if (which < 1)
+            return 0;
+        Node *ptrFound = FindByKey(where, which);
         if (ptrFound == nullptr)
             return 0;
+
         Node *newNode = new Node(kWhat, iWhat);
         newNode->next = ptrFound->next;
         ptrFound->next = newNode;
         size++;
-        return 0;
+        return 1;
     }
     void pushFront(const Key &key, const Info &info)
     {
         Node *newNode = new Node(key, info);
         if (isEmpty())
+        {
             head = newNode;
+            tail = newNode;
+        }
         else
         {
             newNode->next = head;
-            size++;
+            head = newNode;
         }
+        size++;
     }
     void pushBack(const Key &key, const Info &info)
     {
         Node *newNode = new Node(key, info);
         if (isEmpty())
+        {
             head = newNode;
+            tail = newNode;
+        }
         else
         {
             tail->next = newNode;
-            size++;
+            tail = newNode;
         }
+        size++;
     }
     bool popFront()
     {
@@ -133,8 +144,10 @@ public:
         info = tail->info;
         key = tail->key;
     }
-    bool getInfo(const Key &key, Info &info, unsigned int n = 1) // returning the Info of the n-th element of the given Key by reference
+    bool getInfo(const Key &key, Info &info, int n = 1) // returning the Info of the n-th element of the given Key by reference
     {
+        if (n < 1)
+            return 0;
         Node *nodePtr = FindByKey(key, n);
         if (nodePtr == nullptr)
             return 0;
@@ -160,9 +173,9 @@ public:
             popBack();
         }
     }
-    bool search(const Key &key, unsigned int n) // checks if an element of the given key can be found at least n times
+    bool search(const Key &key, int n) // checks if an element of the given key can be found at least n times
     {
-        if (n == 0)
+        if (n < 1)
             return 1;
 
         Node *nodePtr = FindByKey(key, n);
@@ -184,9 +197,9 @@ public:
         }
         return key_count;
     }
-    bool remove(const Key &keyRemove, unsigned int which = 1)
+    bool remove(const Key &keyRemove, int which = 1)
     {
-        if (which == 0)
+        if (which < 1)
             return 0;
 
         if (isEmpty())
@@ -209,7 +222,10 @@ public:
             if (key_count == which)
             {
                 if (nodePtrPrevious->next->next == nullptr)
+                {
                     popBack();
+                    return 1;
+                }
                 else
                 {
                     Node *toBeRemoved = nodePtrPrevious->next;
@@ -233,9 +249,35 @@ public:
         }
         return os;
     }
-    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, int len) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
+    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, int len) const // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
     {
+        if ((startNr < 0) || (len < 0))
+            return 0;
         Node *nodePtr = FindByKey(startK, startNr);
+        for (int i = 0; i < startNr; i++)
+        {
+            if (nodePtr == nullptr)
+                return 0;
+            nodePtr = nodePtr->next;
+        }
+        Node *toBeRemoved;
+
+        for (int i = 0; i < len; i++)
+        {
+            if (nodePtr == nullptr)
+                return 0;
+            subsequence.pushBack(nodePtr->key, nodePtr->info);
+            toBeRemoved = nodePtr;
+            nodePtr = nodePtr->next;
+            remove(toBeRemoved->key);
+        }
+        return 1;
+    }
+    bool extractSubsequence(Sequence<Key, Info> &subsequence, int startNr, int len) const // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
+    {
+        if ((startNr < 0) || (len < 0))
+            return 0;
+        Node *nodePtr = head;
         for (int i = 0; i < startNr; i++)
         {
             if (nodePtr == nullptr)
@@ -277,7 +319,7 @@ private:
 
     Node *FindByKey(const Key &key, unsigned int which) // helping function for finding "which-th" element of a given Key
     {
-        if (which == 0)
+        if (which < 1)
             return nullptr;
 
         Node *nodePtr = head;
