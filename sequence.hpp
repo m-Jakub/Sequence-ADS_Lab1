@@ -218,23 +218,26 @@ public:
         }
         return os;
     }
-    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, const Key &endK, int endNr) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key
+    bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, int len) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
     {
-        Node *start = FindByKey(startK, startNr);
-        if (start == nullptr)
-            return 0;
-
-        Node *end = FindByKey(endK, endNr);
-        if (end == nullptr)
-            return 0;
-
-        Node *nodePtr = start;
-        while (nodePtr != end)
+        Node *nodePtr = FindByKey(startK, startNr);
+        for (int i = 0; i < startNr; i++)
         {
-            subsequence.pushBack(nodePtr->key, nodePtr->info);
+            if (nodePtr == nullptr)
+                return 0;
             nodePtr = nodePtr->next;
         }
-        subsequence.pushBack(end->key, end->info);
+        Node *toBeRemoved;
+
+        for (int i = 0; i < len; i++)
+        {
+            if (nodePtr == nullptr)
+                return 0;
+            subsequence.pushBack(nodePtr->key, nodePtr->info);
+            toBeRemoved = nodePtr;
+            nodePtr = nodePtr->next;
+            remove(toBeRemoved->key);
+        }
         return 1;
     }
     void print()
