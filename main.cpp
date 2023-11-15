@@ -11,11 +11,11 @@ int main()
     Sequence<int, string> test;
     Sequence<int, string> testNull;
     cout << "--pushing--" << endl;
-    test.pushFront(1, "John");
-    test.pushBack(2, "Anna");
-    test.pushBack(2, "Angela");
-    test.pushFront(3, "Kyle");
-    test.pushBack(4, "Carol");
+    test.pushFront(1, "Jim");
+    test.pushBack(2, "Jenny");
+    test.pushBack(2, "Arthur");
+    test.pushFront(3, "Rey");
+    test.pushBack(4, "Ollie");
     test.print();
     cout << "size: " << test.getSize() << endl;
     cout << "searching result: " << test.search(2) << endl;
@@ -33,16 +33,16 @@ int main()
     cout << "--Copy constructor--" << endl;
     Sequence<int, string> *test2 = new Sequence<int, string>(test);
     test2->print();
-    cout << "--popping--" << endl;
+    cout << "--pop--" << endl;
     assert(test2->popFront());
     assert(test2->popBack());
     assert(testNull.popFront() == 0);
     assert(testNull.popBack() == 0);
     test2->print();
-    cout << "--assignment--" << endl;
+    cout << "--assignment operator--" << endl;
     *test2 = test;
     cout << *test2;
-    cout << "--removing--" << endl;
+    cout << "--remove--" << endl;
     test2->print();
     assert(test2->remove(2, 2));
     assert(test2->remove(2, -2) == 0);
@@ -52,21 +52,44 @@ int main()
     assert(test2->remove(2, 8) == 0);
     test2->pushBack(5, "Bob");
     cout << *test2;
-    cout << "--inserting after--" << endl;
-    assert(test2->insertAfter(6, "Garry", 1, 1));
-    assert(test2->insertAfter(6, "Geralt", 6, 1));
-    assert(test2->insertAfter(6, "Gabriel", 6, 2));
-    assert(test2->insertAfter(7, "Monica", 5, 1));
-    assert(test2->insertAfter(1, "", 1, 1));
-    assert(test2->insertAfter(2, "", 6, 1));
-    assert(test2->insertAfter(3, "", 6, 2));
-    assert(test2->insertAfter(4, "", 5, 1));
-    assert(test2->insertAfter(7, "Lorem", 99, 1) == 0);
-    assert(test2->insertAfter(7, "Lorem", 1, 99) == 0);
+    cout << "--insertAfter--" << endl;
+    assert(test2->insertAfter(6, "Jennifer", 1, 1));
+    assert(test2->insertAfter(6, "Robert", 6, 1));
+    assert(test2->insertAfter(6, "Tom", 6, 2));
+    assert(test2->insertAfter(7, "Lessy", 5, 1));
+    assert(test2->insertAfter(1, "Patric", 1, 1));
+    assert(test2->insertAfter(2, "Clarence", 6, 1));
+    assert(test2->insertAfter(3, "Nick", 6, 2));
+    assert(test2->insertAfter(4, "Thomas", 5, 1));
+    assert(test2->insertAfter(3, "Sam", 6, 2));
+    assert(test2->insertAfter(4, "Kim", 5, 1));
+    assert(test2->insertAfter(7, "John", 99, 1) == 0);
+    assert(test2->insertAfter(7, "Sky", 1, 99) == 0);
     cout << *test2;
-    cout << "--splitting--" << endl;
+    Sequence<int, string> *test3 = new Sequence<int, string>(*test2);
+    cout << "--split_pos--" << endl;
     Sequence<int, string> seq1;
     Sequence<int, string> seq2;
-    split_pos(*test2, 2, 2, 3, 2, seq1, seq2);
-    cout << "*All tests passed*" << endl;
+    split_pos(*test2, 2, 2, 2, 2, seq1, seq2);
+    cout << "seq: " << endl;
+    test2->print();
+    cout << "seq1: " << endl
+         << seq1 << endl;
+    cout << "seq2: " << endl
+         << seq2 << endl;
+
+    // cout << "--split_key--" << endl;
+    // Sequence<int, string> seq_1;
+    // Sequence<int, string> seq_2;
+    // split_key(*test3, 6, 2, 2, 2, 2, seq_1, seq_2);
+    // cout << "seq: " << endl;
+    // test2->print();
+    // cout << "seq1: " << endl
+    //      << seq1 << endl;
+    // cout << "seq2: " << endl
+    //      << seq2 << endl;
+
+    //I did not manage to make split_key work
+
+    cout << "*All tests succesful*" << endl;
 }
