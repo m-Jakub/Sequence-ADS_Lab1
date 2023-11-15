@@ -1,4 +1,6 @@
-
+#include <iostream>
+#ifndef SEQUENCE_HPP
+#define SEQUENCE_HPP
 
 using namespace std;
 
@@ -7,13 +9,14 @@ class Sequence
 {
 
 public:
-    Sequence() : head(nullptr), tail(nullptr) {}
+    Sequence() : head(nullptr), tail(nullptr) { size = 0; }
     ~Sequence()
     {
         clear();
     }
-    Sequence(const Sequence<Key, Info> &src) : head(nullptr), tail(nullptr), size(0)
+    Sequence(const Sequence<Key, Info> &src) : head(nullptr), tail(nullptr)
     {
+        size = 0;
         Node *nodePtr = src.head;
         while (nodePtr != nullptr)
         {
@@ -36,7 +39,7 @@ public:
 
         return *this;
     }
-    unsigned int size() const
+    unsigned int getSize() const
     {
         return size;
     }
@@ -53,15 +56,25 @@ public:
     }
     void pushFront(const Key &key, const Info &info)
     {
-        Node *newNode = new Node(kWhat, iWhat);
-        newNode->next = head;
-        size++;
+        Node *newNode = new Node(key, info);
+        if (isEmpty())
+            head = newNode;
+        else
+        {
+            newNode->next = head;
+            size++;
+        }
     }
     void pushBack(const Key &key, const Info &info)
     {
-        Node *newNode = new Node(kWhat, iWhat);
-        tail->next = newNode;
-        size++;
+        Node *newNode = new Node(key, info);
+        if (isEmpty())
+            head = newNode;
+        else
+        {
+            tail->next = newNode;
+            size++;
+        }
     }
     bool popFront()
     {
@@ -113,14 +126,14 @@ public:
         info = head->info;
         key = head->key;
     }
-    bool getBack(Info &, Key &)
+    bool getBack(Info &info, Key &key)
     {
         if (isEmpty())
             return 0;
         info = tail->info;
         key = tail->key;
     }
-    bool getInfo(Info &info, const Key &key, unsigned int n = 1) // returning the Info of the n-th element of the given Key by reference
+    bool getInfo(const Key &key, Info &info, unsigned int n = 1) // returning the Info of the n-th element of the given Key by reference
     {
         Node *nodePtr = FindByKey(key, n);
         if (nodePtr == nullptr)
@@ -136,6 +149,8 @@ public:
         if (size == 0)
             return 1;
         if (size > 0)
+            return 0;
+        else
             return 0;
     }
     void clear()
@@ -182,7 +197,7 @@ public:
 
         if (head->key == keyRemove)
         {
-            if (which = 1)
+            if (which == 1)
                 return popFront();
             key_count++;
         }
@@ -204,7 +219,7 @@ public:
                     return 1;
                 }
             }
-            nodePtr = nodePtr->next;
+            nodePtrPrevious = nodePtrPrevious->next;
         }
         return 0;
     }
@@ -283,3 +298,5 @@ private:
     Node *tail;
     unsigned int size;
 };
+
+#endif // SEQUENCE_HPP
