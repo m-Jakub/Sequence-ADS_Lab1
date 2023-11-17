@@ -73,7 +73,7 @@ int main()
     split_pos(*test2, 2, 2, 2, 2, seq1, seq2);
     cout << "seq: " << endl;
     test2->print();
-    cout << "seq1: " << endl
+    cout << endl << "seq1: " << endl
          << seq1 << endl;
     cout << "seq2: " << endl
          << seq2 << endl;
@@ -83,11 +83,11 @@ int main()
     Sequence<int, string> seq_2;
     split_key(*test3, 6, 2, 2, 2, 2, seq_1, seq_2);
     cout << "seq: " << endl;
-    test2->print();
-    cout << "seq1: " << endl
-         << seq1 << endl;
+    test3->print();
+    cout << endl << "seq1: " << endl
+         << seq_1 << endl;
     cout << "seq2: " << endl
-         << seq2 << endl;
+         << seq_2 << endl;
 
 
     cout << "--merge--" << endl;

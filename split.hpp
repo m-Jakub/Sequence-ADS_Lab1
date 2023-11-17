@@ -34,27 +34,49 @@ Sequence<Key, Info> merge(Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2) 
 {
     Sequence<Key, Info> newSeq;
 
-    Key key;
-    Info info;
-    int i = 1;
+    int seq1Size = seq1.getSize();
 
-    for (; i <= seq1.getSize() / 2; i++)
+    for (int i = 0; i < seq1Size / 2; i++)
     {
-        key = newSeq.getKeyByPos(i);
-        info = newSeq.getInfoByPos(i);
+        Key key = seq1.getKeyByPos(i);
+        Info info = seq1.getInfoByPos(i);
         newSeq.pushBack(key, info);
     }
 
+    Key key;
+    Info info;
     seq2.getFront(info, key);
-
     newSeq.pushBack(key, info);
 
-    for (; i <= seq1.getSize(); i++)
+    for (int i = seq1Size / 2; i < seq1Size; i++)
     {
-        key = newSeq.getKeyByPos(i);
-        info = newSeq.getInfoByPos(i);
+        Key key = seq1.getKeyByPos(i);
+        Info info = seq1.getInfoByPos(i);
         newSeq.pushBack(key, info);
     }
 
     return newSeq;
 };
+
+// template <typename Key, typename Info>
+// Sequence<Key, Info> merge(Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
+// {
+//     Sequence<Key, Info> newSeq;
+
+//     // Copy elements from seq1 to newSeq
+//     for (int i = 0; i < seq1.getSize(); i++)
+//     {
+//         Key key = seq1.getKeyByPos(i);
+//         Info info = seq1.getInfoByPos(i);
+//         newSeq.pushBack(key, info);
+//     }
+
+//     // Insert the first element of seq2 into the middle of newSeq
+//     Key key;
+//     Info info;
+//     seq2.getFront(info, key);
+//     int middle = newSeq.getSize() / 2 + 1;
+//     newSeq.insertAfter(key, info, newSeq.getKeyByPos(middle), middle);
+
+//     return newSeq;
+// }

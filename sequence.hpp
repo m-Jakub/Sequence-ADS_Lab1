@@ -269,6 +269,7 @@ public:
         }
         return 0;
     }
+    bool removePosAfterKey(const Key &keyRemove, int which = 1);
     friend ostream &operator<<(ostream &os, const Sequence<Key, Info> &sequence)
     {
         Node *nodePtr = sequence.head;
