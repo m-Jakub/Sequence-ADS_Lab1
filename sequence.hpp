@@ -136,6 +136,7 @@ public:
             return 0;
         info = head->info;
         key = head->key;
+        return 1;
     }
     bool getBack(Info &info, Key &key)
     {
@@ -143,6 +144,7 @@ public:
             return 0;
         info = tail->info;
         key = tail->key;
+        return 1;
     }
     bool getInfo(const Key &key, Info &info, int n = 1) // returning the Info of the n-th element of the given Key by reference
     {
@@ -156,6 +158,34 @@ public:
             info = nodePtr->info;
             return 1;
         }
+    }
+    Key getKeyByPos(int n = 1) // returning the Info of the n-th element
+    {
+
+        Node *nodePtr = head;
+
+        for (int i = 0; i != n; i++)
+        {
+            if (nodePtr == nullptr)
+                exit(0);
+
+            nodePtr = nodePtr->next;
+        }
+        return nodePtr->key;
+    }
+    Info getInfoByPos(int n = 1) // returning the Info of the n-th element
+    {
+
+        Node *nodePtr = head;
+
+        for (int i = 0; i != n; i++)
+        {
+            if (nodePtr == nullptr)
+                exit(0);
+
+            nodePtr = nodePtr->next;
+        }
+        return nodePtr->info;
     }
     bool isEmpty()
     {
@@ -285,7 +315,7 @@ public:
                 return 0;
             nodePtr = nodePtr->next;
         }
-        
+
         Node *toBeRemoved;
         for (int i = 0; i < len; i++)
         {

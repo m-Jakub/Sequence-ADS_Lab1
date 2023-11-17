@@ -78,18 +78,21 @@ int main()
     cout << "seq2: " << endl
          << seq2 << endl;
 
-    // cout << "--split_key--" << endl;
-    // Sequence<int, string> seq_1;
-    // Sequence<int, string> seq_2;
-    // split_key(*test3, 6, 2, 2, 2, 2, seq_1, seq_2);
-    // cout << "seq: " << endl;
-    // test2->print();
-    // cout << "seq1: " << endl
-    //      << seq1 << endl;
-    // cout << "seq2: " << endl
-    //      << seq2 << endl;
+    cout << "--split_key--" << endl;
+    Sequence<int, string> seq_1;
+    Sequence<int, string> seq_2;
+    split_key(*test3, 6, 2, 2, 2, 2, seq_1, seq_2);
+    cout << "seq: " << endl;
+    test2->print();
+    cout << "seq1: " << endl
+         << seq1 << endl;
+    cout << "seq2: " << endl
+         << seq2 << endl;
 
-    //I did not manage to make split_key work
+
+    cout << "--merge--" << endl;
+    Sequence<int, string> merged = merge(seq1, seq2);
+    merged.print();
 
     cout << "*All tests succesful*" << endl;
 }
