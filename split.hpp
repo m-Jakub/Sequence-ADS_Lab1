@@ -1,10 +1,16 @@
 #include "sequence.hpp"
+#include <stdexcept>
 
 using namespace std;
 
 template <typename Key, typename Info>
 void split_pos(Sequence<Key, Info> &seq, int start_pos, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
 {
+    if (len1 < 0 || len2 < 0)
+    {
+        throw invalid_argument("Invalid len");
+    }
+
     for (int i = 0; i < count; i++)
     {
         if (seq.extractSubsequence(seq1, start_pos, len1) == 0)
@@ -19,6 +25,11 @@ void split_pos(Sequence<Key, Info> &seq, int start_pos, int len1, int len2, int 
 template <typename Key, typename Info>
 void split_key(Sequence<Key, Info> &seq, const Key &start_key, int start_occ, int len1, int len2, int count, Sequence<Key, Info> &seq1, Sequence<Key, Info> &seq2)
 {
+    if (start_occ <= 0 || len1 < 0 || len2 < 0)
+    {
+        throw invalid_argument("Invalid start_occ or len");
+    }
+
     for (int i = 0; i < count; i++)
     {
         if (seq.extractSubsequence(seq1, start_key, start_occ, len1) == 0)

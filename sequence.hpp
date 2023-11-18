@@ -269,7 +269,34 @@ public:
         }
         return 0;
     }
-    bool removePosAfterKey(const Key &keyRemove, int which = 1);
+    bool removePosAfterFirstKey(int which = 1, const Key &keyRemove = Key())
+    {
+        if (which < 0 || isEmpty())
+            return 0;
+
+        Node *nodePtr = nullptr;
+        Node *nodePrevious = nullptr;
+
+        if (keyRemove != Key())
+            nodePtr = FindByKey(keyRemove);
+        else
+            nodePtr = head;
+
+        if (nodePtr == nullptr)
+            return 0;
+
+        for (int i = 0; i < which; i++)
+        {
+            nodePrevious = nodePtr;
+            nodePtr = nodePtr->next;
+            if (nodePtr == nullptr)
+                return 0;
+        }
+
+        nodePrevious->next = nodePtr->next;
+        delete nodePtr;
+        return 1;
+    }
     friend ostream &operator<<(ostream &os, const Sequence<Key, Info> &sequence)
     {
         Node *nodePtr = sequence.head;
@@ -282,7 +309,7 @@ public:
     }
     bool extractSubsequence(Sequence<Key, Info> &subsequence, const Key &startK, int startNr, int len) // returns a Sequence extracted from the original sequence starting from "startNr-th" element of the "startK" Key and ending on "endNr-th" element of the "endK" Key (removes the extracted part from the original sequence)
     {
-        if ((startNr < 0) || (len < 0))
+        if ((startNr <= 0) || (len < 0))
             return 0;
         Node *nodePtr = FindByKey(startK, 1);
         for (int i = 0; i < startNr; i++)
@@ -298,9 +325,9 @@ public:
             if (nodePtr == nullptr)
                 return 0;
             subsequence.pushBack(nodePtr->key, nodePtr->info);
-            toBeRemoved = nodePtr;
             nodePtr = nodePtr->next;
-            remove(toBeRemoved->key);
+            if (startNr != 0)
+                removePosAfterFirstKey(startNr, startK);
         }
         return 1;
     }
@@ -323,9 +350,9 @@ public:
             if (nodePtr == nullptr)
                 return 0;
             subsequence.pushBack(nodePtr->key, nodePtr->info);
-            toBeRemoved = nodePtr;
             nodePtr = nodePtr->next;
-            remove(toBeRemoved->key);
+            if (startNr != 0)
+                removePosAfterFirstKey(startNr);
         }
         return 1;
     }
@@ -349,7 +376,7 @@ private:
         Node(const Key &k, const Info &i) : key(k), info(i), next(nullptr) {}
     };
 
-    Node *FindByKey(const Key &key, unsigned int which) // helping function for finding "which-th" element of a given Key
+    Node *FindByKey(const Key &key, unsigned int which = 1) // helping function for finding "which-th" element of a given Key
     {
         if (which < 1)
             return nullptr;
